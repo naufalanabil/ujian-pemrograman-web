@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "mysql"
+  url       = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  profileImgUrl String?
+  role          Role      @default(USER)
+  name          String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  books         Book[]    @relation("UserBooks")
+  ratings       Rating[]  @relation("UserRatings")
+  comments      Comment[] @relation("UserComments")
+}
+
+model VerificationToken {
+  id         String   @id @default(uuid())
+  identifier String?
+  email      String?
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Book {
+  id          String    @id @default(uuid())
+  name        String
+  imageUrl    String?
+  author      String
+  category    String
+  content     String?   @db.Text
+  description String?
+  userId      String    @map("createdBy")
+  createdBy   User      @relation("UserBooks", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ratings     Rating[]  @relation("BookRatings")
+  comments    Comment[] @relation("BookComments")
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  rate      Int
+  userId    String
+  bookId    String
+  createdAt DateTime @default(now())
+  user      User     @relation("UserRatings", fields: [userId], references: [id], onDelete: Cascade)
+  book      Book     @relation("BookRatings", fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  bookId    String
+  createdAt DateTime @default(now())
+  user      User     @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
+  book      Book     @relation("BookComments", fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  ADMIN
+  USER
+}
