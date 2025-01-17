@@ -1,0 +1,19 @@
+ATURAN PEMAKAIAN
+
+
+Clone repository: git clone https://github.com/naufalanabil/ujian-pemrograman-web.git atau ambil dari zip folder projectnya (extract terlebih dahulu)
+
+Masuk ke direktori proyek: cd ujian-pemrograman-web
+Instal dependensi: npm install
+
+-- Nyalakan Server DB (Laragon atau XAMPP) terlebih dahulu  
+pastikan memiliki DATABASE URL yang sama dengan DATABASE URL 
+yang ada di file.env --
+
+
+Buat DB: npx prisma db push
+Validasi skema Prisma: npx prisma validate
+Jalankan server pengembangan: npm run dev
+
+
+dilarang mencuri env file di dalam project
