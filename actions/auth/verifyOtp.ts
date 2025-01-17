@@ -3,10 +3,7 @@ interface VerifyOTPParams {
   email: string;
   callbackUrl: string;
 }
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://literasi-bookstore.vercel.app" // Gunakan URL produksi yang ada di .env
-    : "http://localhost:3000"; // Gunakan localhost jika bukan di lingkungan produksi
+const baseUrl =  "http://localhost:3000"
 
 export default async function verifyOTP({
   otp,
